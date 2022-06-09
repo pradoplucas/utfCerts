@@ -1,0 +1,16 @@
+{{#each this}}
+    <tr>
+        <th>
+            <input name="checkboxDownload" class="form-check-input" type="checkbox" id="{{code}}">
+        </th>
+        <td>
+            <a href="http://apl.utfpr.edu.br/extensao/certificados/validar/{{code}}" target="_blank" class="link-dark text-decoration-none">
+                {{owner}}
+            </a>
+        </td>
+    </tr>
+{{else}}
+    <tr>
+        <td colspan="2">Ainda não há certificados neste evento</td>
+    </tr>
+{{/each}}

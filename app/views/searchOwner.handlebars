@@ -1,0 +1,112 @@
+{{> navbarOther }}
+
+<div class="mastdiv">
+    <div class="container-fluid">
+        <div class="row justify-content-center text-center">
+            <div class="col-sm-7 col-lg-5 col-11 mt-3">
+ 
+                 <div class="form-floating text-secondary">
+                    <input class="form-control text-center rounded-top rounded-0" id="inputSearchOwner" placeholder="Nome da Pessoa" onkeyup="getOwnerSearch(this.value)">
+                    <label class="start-0 end-0" style="transform-origin: 50% 0;" for="inputSearchOwner">Nome da Pessoa</label>
+                </div> 
+
+                <div class="position-relative" style="z-index: 999;">
+                    <ul id="ulSearch" class="overflow-auto d-none position-absolute">
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <section id="divInfo" class="row justify-content-center d-none">
+
+            <hr class="my-3" style="border-top: 3px solid rgb(255, 255, 255);">
+
+            <div class="col-11 col-sm-2 text-dark mb-2 mb-sm-0 text-center">
+                <div class="form-floating text-secondary">
+                    <select class="form-select text-center" id="floatingSelectYear" onchange="filterEvents()"></select>
+                    <label class="start-0 end-0" style="transform-origin: 50% 0;" for="floatingSelectYear">Ano</label>
+                </div>
+            </div>
+
+            <div class="col-11 col-sm-5 text-dark mb-2 mb-sm-0 text-center">
+                <div class="form-floating text-secondary">
+                    <input class="form-control text-center" id="floatingInputEvent" placeholder="Nome do Evento" onkeyup="filterEvents()">
+                    <label class="start-0 end-0" style="transform-origin: 50% 0;" for="floatingInputEvent">Nome do Evento</label>
+                </div>
+
+            </div>
+
+            <div class="col-11 col-sm-2 text-dark align-self-center">
+                <button type="button" class="btn btn-light-custom w-100" onclick="clearFilter()">Limpar</button>
+            </div>
+
+            <div class="col-11 table-responsive mt-3">
+            
+                <table class="table table-striped table-hover table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" class="align-middle">
+
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-light btn-sm dropdown-toggle border-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <ul class="dropdown-menu text-center">
+                                        <li><a class="dropdown-item" onclick="downloadFiles(true)">Baixar Selecionados</a></li>
+                                        <li><a class="dropdown-item" onclick="downloadFiles()">Baixar Todos</a></li>
+                                    </ul>
+                                </div>
+
+                            </th>
+                            <th scope="col" class="align-middle">
+                                Ano
+                            </th>
+                            <th scope="col" class="align-middle">
+                                Nome do Evento
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-light" id="tableBody">
+                        {{> tableOwner 0}}
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+
+
+    </div>
+</div>
+
+<div class="modal fade" id="modalLoading" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">Preparando Download</h5>
+
+                <div style="right: 4%; z-index: 10" class="position-absolute">
+                    <a role="button" class="link-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times align-middle h3 m-0"></i>
+                    </a>
+                </div>
+
+            </div>
+            <div class="modal-body text-center">
+                <div class="spinner-grow text-dark my-4 mx-1" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-dark my-4 mx-1" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-dark my-4 mx-1" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/searchOwner.js"></script>

@@ -1,0 +1,17 @@
+{{#each this}}
+    <tr class="all {{year}}">
+        <th>
+            <input name="checkboxDownload" class="form-check-input is-show" type="checkbox" id="{{code}}">
+        </th>
+        <td>{{year}}</td>
+        <td>
+            <a href="http://apl.utfpr.edu.br/extensao/certificados/validar/{{code}}" target="_blank" class="link-dark text-decoration-none">
+                {{event_name}}
+            </a>
+        </td>
+    </tr>
+{{else}}
+    <tr>
+        <td colspan="3">Ainda não há certificados neste evento</td>
+    </tr>
+{{/each}}
