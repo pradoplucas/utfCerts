@@ -4,7 +4,7 @@ const deleteDir = require('../modules/deleteDir');
 
 module.exports = {
 	getDownloadCerts: (req, res) => {
-		console.log('download controller userID: ' + req.params.userId);
+		console.log('userID: ' + req.params.userId);
 		let url = path.join(
 			process.cwd(),
 			'uploads',

@@ -21,7 +21,7 @@ module.exports = (arrayCodes, pathToDir) => {
 					fileStream.close();
 					count++;
 					if (count == arraySize) {
-						console.log('Done');
+						console.log('FS Done');
 						resolve({ success: true });
 					}
 				});

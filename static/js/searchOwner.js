@@ -16,36 +16,42 @@ async function getData (_path, _id = ''){
 }
 
 function getOwnerSearch(inputSearchOwner) {
-	let ulSearch = document.getElementById('ulSearch');
+	//let ulSearch = document.getElementById('ulSearch');
 
 	if (inputSearchOwner.length >= 5) {
 
-		getData(pathOwnerSearch, inputSearchOwner).then(resp => {
+		getData(pathOwnerSearch, encodeURIComponent(inputSearchOwner)).then(resp => {
 
 			if (resp.length > 0){
-				ulSearch.innerHTML = resp
-				ulSearch.classList.remove('d-none');
+				document.getElementById('ulSearch').innerHTML = resp
+				document.getElementById('divSearch').classList.remove('d-none');
 			}
 			else {
-				ulSearch.classList.add('d-none');
+				document.getElementById('divSearch').classList.add('d-none');
 			}
 
 		}).catch(err => {
 			console.log(err)
 		});
 	} else {
-		ulSearch.classList.add('d-none');
+		document.getElementById('divSearch').classList.add('d-none');
 	}
 }
 
 function getOwnerData(ownerId, ownerName){
-	document.getElementById('ulSearch').classList.add('d-none')
+	document.getElementById('divSearch').classList.add('d-none')
 	document.getElementById('inputSearchOwner').value = ownerName
 
+	document.getElementById('divInfo').classList.add('d-none')
+	document.getElementById('divLoadingContent').classList.remove('d-none')
+
 	getDataJSON(pathOwnerData, ownerId).then(resp => {
-		document.getElementById('divInfo').classList.remove('d-none')
 		document.getElementById('tableBody').innerHTML = resp.tableBody
+
 		document.getElementById('floatingSelectYear').innerHTML = resp.selectYear
+
+		document.getElementById('divLoadingContent').classList.add('d-none')
+		document.getElementById('divInfo').classList.remove('d-none')
 
 	}).catch(err => {
 		console.log(err)
@@ -85,14 +91,32 @@ function downloadFiles(isOnlySelected) {
 	if(isOnlySelected) queryStr += ':checked'
 
 	arrayCodes = [... allTrs.querySelectorAll(queryStr)].map(item => item.id)
-	
-	const modalLoading = new bootstrap.Modal(document.getElementById('modalLoading'))
-	
-	modalLoading.show()
-	
-	getData(pathOwnerDownload, JSON.stringify(arrayCodes)).then((resp) => {
-		window.location = '/download/' + resp;
-		modalLoading.hide()
-	});
 
+	if (arrayCodes.length > 0){
+		const modalDownload = new bootstrap.Modal(document.getElementById('modalDownload'))
+		
+		modalDownload.show()
+		
+		getDataJSON(pathOwnerDownload, JSON.stringify(arrayCodes)).then((resp) => {
+			if (!resp.err){
+				window.location = '/download/' + resp.userId;
+				modalDownload.hide()
+			}
+			else{
+				document.getElementById('modalDownloadTitle').innerHTML = 'Problema no Download'
+				document.getElementById('modalDownloadBody').innerHTML = '<div id="modalDownloadTitle" class="modal-body text-center"><h6>Parece que você está tentando baixar muitos arquivos de uma só vez. Você vai precisar mesmo de todos esses arquivos? Se sim, tente baixá-los em porções menores para não sobrecarregar o servidor.</h6><h5>:D</h5></div>'
+			}
+		}).catch(err => {
+			document.getElementById('modalDownloadTitle').innerHTML = 'Problema no Download'
+			document.getElementById('modalDownloadBody').innerHTML = '<div id="modalDownloadTitle" class="modal-body text-center"><h6>Parece que você está tentando baixar muitos arquivos de uma só vez. Você vai precisar mesmo de todos esses arquivos? Se sim, tente baixá-los em porções menores para não sobrecarregar o servidor.</h6><h5>:D</h5></div>'
+		});
+	}
+}
+
+function closeSearch(){
+	document.getElementById('divSearch').classList.add('d-none')
+}
+
+function selectAll(elm){
+	elm.select()
 }

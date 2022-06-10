@@ -12,7 +12,7 @@ if(process.env.NODE_ENV === 'production'){
         'tableOwner', 
         hbs.handlebars.compile(
             fs.readFileSync(
-                '/opt/system/app/views/partials/tableOwner.handlebars'
+                '/opt/utfCerts/app/views/partials/tableOwner.handlebars'
             ).toString('utf-8')
         )
     );
@@ -20,7 +20,7 @@ if(process.env.NODE_ENV === 'production'){
         'tableEvent', 
         hbs.handlebars.compile(
             fs.readFileSync(
-                '/opt/system/app/views/partials/tableEvent.handlebars'
+                '/opt/utfCerts/app/views/partials/tableEvent.handlebars'
             ).toString('utf-8')
         )
     );

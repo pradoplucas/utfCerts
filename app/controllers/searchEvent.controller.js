@@ -22,10 +22,14 @@ module.exports = {
 	},
 	getEventSearch: async (req, res) => {
 		let eventLi = '',
-			eventName = req.params.eventName
+			eventName = decodeURIComponent(req.params.eventName)
 						.toUpperCase()
 						.normalize('NFD')
 						.replace(/[\u0300-\u036f]/g, '');
+
+		eventName = eventName.replace(/\.|\^|\$|\*|\+|\-|\?|\(|\)|\[|\]|\{|\}|\\|\||\—|\//g, (x) => {
+			return '\\' + x
+		})
 
 		let events = 	await Event
 						.find({ name_search: { $regex:  eventName } })
@@ -67,15 +71,21 @@ module.exports = {
 	getEventDownload: (req, res) => {
 		let arrayCodes = JSON.parse(req.params.arrayCodes);
 
-		let userId = 	'user_'
-						+ (Math.floor(Math.random() * 10000) + 1)
-						+ Date.now();
+		if (arrayCodes.length < 100){
+			let userId = 	'user_'
+							+ (Math.floor(Math.random() * 10000) + 1)
+							+ Date.now();
+	
+			downloadFiles(userId, arrayCodes).then(() => {
+				res.end(JSON.stringify({userId: userId.toString()}));
+			})
+			.catch((err) => {
+				console.log('Err: ' + err);
+			});
+		}
+		else{
+			res.end('{"err": true}');
+		}
 
-		downloadFiles(userId, arrayCodes).then(() => {
-			res.end(userId.toString());
-		})
-		.catch((err) => {
-			console.log('Err: ' + err);
-		});
 	},
 };

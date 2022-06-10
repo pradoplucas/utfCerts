@@ -25,6 +25,8 @@ module.exports = async (userId, arrayCodes, user_id = '') => {
 	}
 
 	try {
+
+		console.log('##### -- Download Process Start')
 		
 		await downloadFromSGCE(
 			arrayCodes,

@@ -16,10 +16,14 @@ module.exports = {
 	},
 	getOwnerSearch: async (req, res) => {
 		let ownerLi = '',
-			ownerName = req.params.ownerName
+			ownerName = decodeURIComponent(req.params.ownerName)
 						.toUpperCase()
 						.normalize('NFD')
 						.replace(/[\u0300-\u036f]/g, '');
+
+		ownerName = ownerName.replace(/\.|\^|\$|\*|\+|\-|\?|\(|\)|\[|\]|\{|\}|\\|\||\—|\//g, (x) => {
+			return '\\' + x
+		})	
 
 		let owners = 	await Owner
 						.find({ name: { $regex: ownerName } })
@@ -67,15 +71,21 @@ module.exports = {
 	getOwnerDownload: (req, res) => {
 		let arrayCodes = JSON.parse(req.params.arrayCodes);
 
-		let userId = 	'user_' 
-						+ (Math.floor(Math.random() * 10000) + 1) 
-						+ Date.now();
+		if (arrayCodes.length < 100){
+			let userId = 	'user_' 
+							+ (Math.floor(Math.random() * 10000) + 1) 
+							+ Date.now();
+	
+			downloadFiles(userId, arrayCodes).then(() => {
+				res.end(JSON.stringify({userId: userId.toString()}));
+			})
+			.catch((err) => {
+				console.log('Err: ' + err);
+			});
+		}
+		else{
+			res.end('{"err": true}');
+		}
 
-		downloadFiles(userId, arrayCodes).then(() => {
-			res.end(userId.toString());
-		})
-		.catch((err) => {
-			console.log('Err: ' + err);
-		});
 	},
 };

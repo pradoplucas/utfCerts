@@ -8,10 +8,7 @@ module.exports = (pathToDir) => {
 
 	return new Promise((resolve, reject) => {
 		output.on('close', function () {
-			console.log(archive.pointer() + ' total bytes');
-			console.log(
-				'archiver done.'
-			);
+			console.log('Size: ' + (archive.pointer()/1000) + ' kb');
 			resolve({ success: true });
 		});
 
